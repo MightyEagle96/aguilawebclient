@@ -12,6 +12,7 @@ export default function HomePage() {
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -27,6 +28,7 @@ export default function HomePage() {
   const submitForm = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
     const { data, error } = await httpService.post("login", { regNumber });
 
     if (error) {
@@ -34,7 +36,8 @@ export default function HomePage() {
       setSeverity("error");
       setMessage(error);
     }
-    console.log(error);
+    if (data) console.log(data);
+    setLoading(false);
   };
   return (
     <div className="row m-0">
@@ -61,8 +64,9 @@ export default function HomePage() {
               />
               <LoadingButton
                 type="submit"
-                variant="outlined"
+                variant="contained"
                 fullWidth
+                loading={loading}
                 endIcon={<Login />}
                 className="mt-3"
               >
