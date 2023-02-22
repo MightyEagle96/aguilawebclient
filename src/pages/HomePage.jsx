@@ -6,6 +6,7 @@ import { httpService } from "../httpService";
 import SnackBar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { forwardRef } from "react";
+import { aguilaClient } from "../util";
 
 export default function HomePage() {
   const [regNumber, setRegNumber] = useState("");
@@ -36,7 +37,11 @@ export default function HomePage() {
       setSeverity("error");
       setMessage(error);
     }
-    if (data) console.log(data);
+    if (data) {
+      localStorage.setItem(aguilaClient, JSON.stringify(data));
+      window.location.assign("/");
+      console.log(data);
+    }
     setLoading(false);
   };
   return (
