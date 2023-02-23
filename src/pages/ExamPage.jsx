@@ -284,8 +284,14 @@ export default function ExamPage() {
                     {activeSubject.name}
                   </Typography>
                   <Typography fontWeight={900} color="#3d5afe">
-                    {getQuestionsAnswered()} of {questions.questions.length}
+                    {getQuestionsAnswered()} of {questions.questions.length}{" "}
+                    answered
                   </Typography>
+                </div>
+                <div className="mt-4">
+                  <Button fullWidth variant="contained">
+                    submit
+                  </Button>
                 </div>
               </div>
             </div>
