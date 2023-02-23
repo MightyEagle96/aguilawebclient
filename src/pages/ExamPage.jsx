@@ -80,6 +80,36 @@ export default function ExamPage() {
     if (index === -1) return 0;
     else return myResponses[index].responses.length;
   };
+
+  const changeBtnColor = (questionId, buttonIndex) => {
+    const index = myResponses.findIndex((c) => c.subject === activeSubject._id);
+
+    if (index >= 0) {
+      if (buttonIndex === getIndex(activeSubject._id)) return "info";
+
+      const index2 = myResponses[index].responses.findIndex(
+        (c) => c.questionId === questionId
+      );
+
+      if (index2 >= 0) return "success";
+      else return "error";
+    } else {
+      return "error";
+    }
+  };
+
+  const checkAnswer = (answer, questionId) => {
+    const index = myResponses.findIndex((c) => c.subject === activeSubject._id);
+
+    if (index >= 0) {
+      const index2 = myResponses[index].responses.findIndex(
+        (c) => c.questionId === questionId && c.answer === answer
+      );
+
+      if (index2 >= 0) return true;
+      return false;
+    }
+  };
   return (
     <div>
       {examData ? (
@@ -122,6 +152,11 @@ export default function ExamPage() {
                         <FormControlLabel
                           onClick={sendAnswer}
                           className="mb-3"
+                          checked={checkAnswer(
+                            questions.questions[getIndex(activeSubject._id)]
+                              .optionA,
+                            questions.questions[getIndex(activeSubject._id)]._id
+                          )}
                           value={
                             questions.questions[getIndex(activeSubject._id)]
                               .optionA
@@ -135,6 +170,11 @@ export default function ExamPage() {
                         <FormControlLabel
                           onClick={sendAnswer}
                           className="mb-3"
+                          checked={checkAnswer(
+                            questions.questions[getIndex(activeSubject._id)]
+                              .optionB,
+                            questions.questions[getIndex(activeSubject._id)]._id
+                          )}
                           value={
                             questions.questions[getIndex(activeSubject._id)]
                               .optionB
@@ -148,6 +188,11 @@ export default function ExamPage() {
                         <FormControlLabel
                           onClick={sendAnswer}
                           className="mb-3"
+                          checked={checkAnswer(
+                            questions.questions[getIndex(activeSubject._id)]
+                              .optionC,
+                            questions.questions[getIndex(activeSubject._id)]._id
+                          )}
                           value={
                             questions.questions[getIndex(activeSubject._id)]
                               .optionC
@@ -161,6 +206,11 @@ export default function ExamPage() {
                         <FormControlLabel
                           onClick={sendAnswer}
                           className="mb-3"
+                          checked={checkAnswer(
+                            questions.questions[getIndex(activeSubject._id)]
+                              .optionD,
+                            questions.questions[getIndex(activeSubject._id)]._id
+                          )}
                           value={
                             questions.questions[getIndex(activeSubject._id)]
                               .optionD
@@ -180,8 +230,12 @@ export default function ExamPage() {
               <div className="p-3 mt-auto">
                 {questions.questions.map((c, i) => (
                   <Button
+                    variant="contained"
+                    className="me-1 mb-1"
+                    size="small"
                     onClick={() => changeQuestion(activeSubject._id, i)}
                     key={i}
+                    color={changeBtnColor(c._id, i)}
                   >
                     {i + 1}
                   </Button>
