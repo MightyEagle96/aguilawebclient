@@ -3,10 +3,9 @@ import { TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Login } from "@mui/icons-material";
 import { httpService } from "../httpService";
-import SnackBar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import { forwardRef } from "react";
+
 import { aguilaClient } from "../util";
+import MySnackBar from "../components/MySnackBar";
 
 export default function HomePage() {
   const [regNumber, setRegNumber] = useState("");
@@ -15,17 +14,6 @@ export default function HomePage() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const Alert = forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
   const submitForm = async (e) => {
     e.preventDefault();
 
@@ -38,9 +26,8 @@ export default function HomePage() {
       setMessage(error);
     }
     if (data) {
-      localStorage.setItem(aguilaClient, JSON.stringify(data));
+      sessionStorage.setItem(aguilaClient, JSON.stringify(data));
       window.location.assign("/");
-      console.log(data);
     }
     setLoading(false);
   };
@@ -82,16 +69,12 @@ export default function HomePage() {
         </div>
       </div>
 
-      <SnackBar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      <MySnackBar
         open={open}
-        autoHideDuration={5000}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity={severity} sx={{ width: "25%" }}>
-          {message}
-        </Alert>
-      </SnackBar>
+        setOpen={setOpen}
+        severity={severity}
+        message={message}
+      />
     </div>
   );
 }

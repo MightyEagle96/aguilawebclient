@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { loggedInUser } from "../httpService";
+import ExamPage from "../pages/ExamPage";
 import HomePage from "../pages/HomePage";
-import InstructionPage from "../pages/InstructionPage";
 
 export default function MainRoutes() {
   const publicRoutes = [{ path: "/", component: HomePage }];
 
-  const privateRoutes = [{ path: "/", component: InstructionPage }];
+  const privateRoutes = [{ path: "/", component: ExamPage }];
   return (
     <BrowserRouter>
       <Routes>

@@ -1,8 +1,34 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
 import logo from "../assets/instruction.jpg";
+import { httpService } from "../httpService";
 
-export default function InstructionPage() {
+export default function InstructionPage({
+  setExamData,
+  setActiveSubject,
+  setQuestions,
+}) {
+  const getQuestions = async () => {
+    const { data } = await httpService("getExamQuestions");
+
+    if (data) {
+      console.log(data);
+      data.subjects.forEach((d) => (d.questionIndex = 0));
+      setActiveSubject(data.subjects[0]);
+
+      //get the subject id
+      const subjectId = data.subjects[0]._id;
+
+      const initialQuestions = data.questions.questionBanks.find(
+        (c) => c.subject === subjectId
+      );
+      if (initialQuestions) {
+        setQuestions(initialQuestions);
+      }
+      setExamData(data);
+    }
+  };
+
   return (
     <div>
       <div className="mt-5 mb-5 container">
@@ -24,7 +50,9 @@ export default function InstructionPage() {
               </div>
             </div>
             <div className="mt-auto">
-              <Button variant="contained">Begin Exam</Button>
+              <Button variant="contained" onClick={getQuestions}>
+                Begin Exam
+              </Button>
             </div>
           </div>
         </div>
