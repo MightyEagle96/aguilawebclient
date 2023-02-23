@@ -16,6 +16,10 @@ httpService.interceptors.response.use(
     return response;
   },
   async (error) => {
+    // if (error.response.status === 401) {
+    //   sessionStorage.removeItem(aguilaClient);
+    //   window.location.reload();
+    // }
     return { error: error.response.data };
   }
 );
