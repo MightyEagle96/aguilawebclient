@@ -23,15 +23,6 @@ export default function ExamPage() {
     if (data) setMyResponses(data);
   };
 
-  useEffect(() => {
-    viewResponses();
-    window.addEventListener("beforeunload", (e) => {
-      e.preventDefault();
-      e.returnValue =
-        "Refreshing this page will disrupt your exam. Are you sure?";
-    });
-  }, []);
-
   const changeQuestions = (id) => {
     const initialQuestions = examData.questions.questionBanks.find(
       (c) => c.subject === id
@@ -62,9 +53,19 @@ export default function ExamPage() {
   };
 
   const sendAnswer = async (e) => {
-    if (e.target.value) {
+    if (e.target) {
       const body = {
         answer: e.target.value,
+        subject: activeSubject._id,
+        questionId: questions.questions[getIndex(activeSubject._id)]._id,
+      };
+
+      const { data } = await httpService.post("saveResponse", body);
+      if (data) setMyResponses(data);
+    }
+    if (e) {
+      const body = {
+        answer: e,
         subject: activeSubject._id,
         questionId: questions.questions[getIndex(activeSubject._id)]._id,
       };
@@ -110,6 +111,43 @@ export default function ExamPage() {
       return false;
     }
   };
+
+  const keyPress = async (e) => {
+    if (e.code === "KeyA") {
+      const option = questions.questions[getIndex(activeSubject._id)].optionA;
+      await sendAnswer(option);
+    } else if (e.code === "KeyB") {
+      const option = questions.questions[getIndex(activeSubject._id)].optionB;
+      await sendAnswer(option);
+    } else if (e.code === "KeyC") {
+      const option = questions.questions[getIndex(activeSubject._id)].optionC;
+      await sendAnswer(option);
+    } else if (e.code === "KeyD") {
+      const option = questions.questions[getIndex(activeSubject._id)].optionD;
+      await sendAnswer(option);
+    } else if (e.code === "KeyN") {
+      const questionData = questions;
+
+      if (questionData.questions[activeSubject.questionIndex + 1])
+        changeQuestion(activeSubject._id, activeSubject.questionIndex + 1);
+    } else if (e.code === "KeyP") {
+      const questionData = questions;
+      if (questionData.questions[activeSubject.questionIndex - 1])
+        changeQuestion(activeSubject._id, activeSubject.questionIndex - 1);
+    }
+  };
+
+  useEffect(() => {
+    viewResponses();
+    window.addEventListener("beforeunload", (e) => {
+      e.preventDefault();
+      e.returnValue =
+        "Refreshing this page will disrupt your exam. Are you sure?";
+    });
+
+    window.addEventListener("keypress", keyPress);
+  }, [questions, activeSubject]);
+
   return (
     <div>
       {examData ? (
