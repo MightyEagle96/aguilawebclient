@@ -10,6 +10,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { httpService, loggedInUser } from "../httpService";
 import InstructionPage from "./InstructionPage";
+import Swal from "sweetalert2";
 
 export default function ExamPage() {
   const [examData, setExamData] = useState(null);
@@ -113,28 +114,48 @@ export default function ExamPage() {
   };
 
   const keyPress = async (e) => {
-    if (e.code === "KeyA") {
-      const option = questions.questions[getIndex(activeSubject._id)].optionA;
-      await sendAnswer(option);
-    } else if (e.code === "KeyB") {
-      const option = questions.questions[getIndex(activeSubject._id)].optionB;
-      await sendAnswer(option);
-    } else if (e.code === "KeyC") {
-      const option = questions.questions[getIndex(activeSubject._id)].optionC;
-      await sendAnswer(option);
-    } else if (e.code === "KeyD") {
-      const option = questions.questions[getIndex(activeSubject._id)].optionD;
-      await sendAnswer(option);
-    } else if (e.code === "KeyN") {
-      const questionData = questions;
+    if (questions) {
+      if (e.code === "KeyA") {
+        const option = questions.questions[getIndex(activeSubject._id)].optionA;
+        await sendAnswer(option);
+      } else if (e.code === "KeyB") {
+        const option = questions.questions[getIndex(activeSubject._id)].optionB;
+        await sendAnswer(option);
+      } else if (e.code === "KeyC") {
+        const option = questions.questions[getIndex(activeSubject._id)].optionC;
+        await sendAnswer(option);
+      } else if (e.code === "KeyD") {
+        const option = questions.questions[getIndex(activeSubject._id)].optionD;
+        await sendAnswer(option);
+      } else if (e.code === "KeyN") {
+        const questionData = questions;
 
-      if (questionData.questions[activeSubject.questionIndex + 1])
-        changeQuestion(activeSubject._id, activeSubject.questionIndex + 1);
-    } else if (e.code === "KeyP") {
-      const questionData = questions;
-      if (questionData.questions[activeSubject.questionIndex - 1])
-        changeQuestion(activeSubject._id, activeSubject.questionIndex - 1);
+        if (questionData.questions[activeSubject.questionIndex + 1])
+          changeQuestion(activeSubject._id, activeSubject.questionIndex + 1);
+      } else if (e.code === "KeyP") {
+        const questionData = questions;
+        if (questionData.questions[activeSubject.questionIndex - 1])
+          changeQuestion(activeSubject._id, activeSubject.questionIndex - 1);
+      }
     }
+  };
+
+  const submitExam = () => {
+    Swal.fire({
+      icon: "question",
+      title: "Submit",
+      text: "Are you sure you want to submit?",
+      cancelButtonColor: "#ff1744",
+      cancelButtonText: "Keep Writing",
+      showCancelButton: true,
+      confirmButtonText: "Yes Submit",
+      confirmButtonColor: "#357a38",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { data } = await httpService("submit");
+        console.log(data);
+      }
+    });
   };
 
   useEffect(() => {
@@ -327,7 +348,7 @@ export default function ExamPage() {
                   </Typography>
                 </div>
                 <div className="mt-4">
-                  <Button fullWidth variant="contained">
+                  <Button fullWidth variant="contained" onClick={submitExam}>
                     submit
                   </Button>
                 </div>

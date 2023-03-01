@@ -12,7 +12,6 @@ export default function InstructionPage({
     const { data } = await httpService("getExamQuestions");
 
     if (data) {
-      console.log(data);
       data.subjects.forEach((d) => (d.questionIndex = 0));
       setActiveSubject(data.subjects[0]);
 
