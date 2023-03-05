@@ -54,16 +54,6 @@ export default function ExamPage() {
   };
 
   const sendAnswer = async (e) => {
-    if (e.target) {
-      const body = {
-        answer: e.target.value,
-        subject: activeSubject._id,
-        questionId: questions.questions[getIndex(activeSubject._id)]._id,
-      };
-
-      const { data } = await httpService.post("saveResponse", body);
-      if (data) setMyResponses(data);
-    }
     if (e) {
       const body = {
         answer: e,
@@ -113,20 +103,24 @@ export default function ExamPage() {
     }
   };
 
-  const keyPress = async (e) => {
+  const keyPress = (e) => {
     if (questions) {
       if (e.code === "KeyA") {
         const option = questions.questions[getIndex(activeSubject._id)].optionA;
-        await sendAnswer(option);
+
+        sendAnswer(option);
       } else if (e.code === "KeyB") {
         const option = questions.questions[getIndex(activeSubject._id)].optionB;
-        await sendAnswer(option);
+
+        sendAnswer(option);
       } else if (e.code === "KeyC") {
         const option = questions.questions[getIndex(activeSubject._id)].optionC;
-        await sendAnswer(option);
+
+        sendAnswer(option);
       } else if (e.code === "KeyD") {
         const option = questions.questions[getIndex(activeSubject._id)].optionD;
-        await sendAnswer(option);
+
+        sendAnswer(option);
       } else if (e.code === "KeyN") {
         const questionData = questions;
 
@@ -153,18 +147,18 @@ export default function ExamPage() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const { data } = await httpService("submit");
-        console.log(data);
+
+        if (data) {
+          sessionStorage.removeItem("aguilaClient");
+
+          window.location.assign("/examConcluded");
+        }
       }
     });
   };
 
   useEffect(() => {
     viewResponses();
-    window.addEventListener("beforeunload", (e) => {
-      e.preventDefault();
-      e.returnValue =
-        "Refreshing this page will disrupt your exam. Are you sure?";
-    });
 
     window.addEventListener("keypress", keyPress);
   }, [questions, activeSubject]);
@@ -206,10 +200,9 @@ export default function ExamPage() {
                 </div>
                 <div className="row">
                   <div className="col-lg-6">
-                    <FormControl>
-                      <RadioGroup>
+                    <FormControl onChange={(e) => sendAnswer(e.target.value)}>
+                      <RadioGroup name="hello">
                         <FormControlLabel
-                          onClick={sendAnswer}
                           className="mb-3"
                           checked={checkAnswer(
                             questions.questions[getIndex(activeSubject._id)]
@@ -227,7 +220,6 @@ export default function ExamPage() {
                           }`}
                         />
                         <FormControlLabel
-                          onClick={sendAnswer}
                           className="mb-3"
                           checked={checkAnswer(
                             questions.questions[getIndex(activeSubject._id)]
@@ -245,7 +237,6 @@ export default function ExamPage() {
                           }`}
                         />
                         <FormControlLabel
-                          onClick={sendAnswer}
                           className="mb-3"
                           checked={checkAnswer(
                             questions.questions[getIndex(activeSubject._id)]
@@ -263,7 +254,6 @@ export default function ExamPage() {
                           }`}
                         />
                         <FormControlLabel
-                          onClick={sendAnswer}
                           className="mb-3"
                           checked={checkAnswer(
                             questions.questions[getIndex(activeSubject._id)]
