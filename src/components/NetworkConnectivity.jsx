@@ -17,6 +17,14 @@ export default function NetworkConnectivity({ setNetworkStatus }) {
       setNetworkStatus(false);
       setConnected(false);
     }
+
+    if (status) {
+      if (status === 403) {
+        sessionStorage.removeItem("aguilaClient");
+
+        window.location.assign("/examConcluded");
+      }
+    }
   };
   useEffect(() => {
     // const timeout = setTimeout(() => {

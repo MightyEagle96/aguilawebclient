@@ -16,7 +16,9 @@ httpService.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (error.response) return { error: error.response.data };
+    console.log(error);
+    if (error.response)
+      return { error: error.response.data, status: error.response.status };
 
     return { error: "Lost connection to the server" };
   }

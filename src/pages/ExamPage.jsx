@@ -295,7 +295,15 @@ export default function ExamPage() {
                       <div className="col-lg-6"></div>
                     </div>
                   </>
-                ) : null}
+                ) : (
+                  <div className="container mt-5 d-flex justify-content-center">
+                    <div className="alert alert-danger col-lg-4 text-center">
+                      <Typography textTransform={"upperCase"}>
+                        This subject has no questions
+                      </Typography>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="p-3 mt-auto">
                 {questions.questions.map((c, i) => (
