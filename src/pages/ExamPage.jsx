@@ -191,96 +191,111 @@ export default function ExamPage() {
                   ))}
                 </div>
 
-                <div className="mb-5">
-                  <Typography variant="h4" fontWeight={900} color="GrayText">
-                    Question {getIndex(activeSubject._id) + 1}
-                  </Typography>
-                </div>
-                <div className="mb-4">
-                  <Typography>
-                    {questions.questions[getIndex(activeSubject._id)].question}
-                  </Typography>
-                </div>
-                <div className="row">
-                  <div className="col-lg-6">
-                    <FormControl
-                      disabled={!networkStatus}
-                      onChange={(e) => sendAnswer(e.target.value)}
-                    >
-                      <RadioGroup name="hello">
-                        <FormControlLabel
-                          className="mb-3"
-                          checked={checkAnswer(
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionA,
-                            questions.questions[getIndex(activeSubject._id)]._id
-                          )}
-                          value={
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionA
-                          }
-                          control={<Radio />}
-                          label={`A. ${
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionA
-                          }`}
-                        />
-                        <FormControlLabel
-                          className="mb-3"
-                          checked={checkAnswer(
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionB,
-                            questions.questions[getIndex(activeSubject._id)]._id
-                          )}
-                          value={
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionB
-                          }
-                          control={<Radio />}
-                          label={`B. ${
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionB
-                          }`}
-                        />
-                        <FormControlLabel
-                          className="mb-3"
-                          checked={checkAnswer(
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionC,
-                            questions.questions[getIndex(activeSubject._id)]._id
-                          )}
-                          value={
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionC
-                          }
-                          control={<Radio />}
-                          label={`C. ${
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionC
-                          }`}
-                        />
-                        <FormControlLabel
-                          className="mb-3"
-                          checked={checkAnswer(
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionD,
-                            questions.questions[getIndex(activeSubject._id)]._id
-                          )}
-                          value={
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionD
-                          }
-                          control={<Radio />}
-                          label={`D. ${
-                            questions.questions[getIndex(activeSubject._id)]
-                              .optionD
-                          }`}
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </div>
-                  <div className="col-lg-6"></div>
-                </div>
+                {questions.questions.length > 0 ? (
+                  <>
+                    <div className="mb-5">
+                      <Typography
+                        variant="h4"
+                        fontWeight={900}
+                        color="GrayText"
+                      >
+                        Question {getIndex(activeSubject._id) + 1}
+                      </Typography>
+                    </div>
+                    <div className="mb-4">
+                      <Typography>
+                        {
+                          questions.questions[getIndex(activeSubject._id)]
+                            .question
+                        }
+                      </Typography>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <FormControl
+                          disabled={!networkStatus}
+                          onChange={(e) => sendAnswer(e.target.value)}
+                        >
+                          <RadioGroup name="hello">
+                            <FormControlLabel
+                              className="mb-3"
+                              checked={checkAnswer(
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionA,
+                                questions.questions[getIndex(activeSubject._id)]
+                                  ._id
+                              )}
+                              value={
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionA
+                              }
+                              control={<Radio />}
+                              label={`A. ${
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionA
+                              }`}
+                            />
+                            <FormControlLabel
+                              className="mb-3"
+                              checked={checkAnswer(
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionB,
+                                questions.questions[getIndex(activeSubject._id)]
+                                  ._id
+                              )}
+                              value={
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionB
+                              }
+                              control={<Radio />}
+                              label={`B. ${
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionB
+                              }`}
+                            />
+                            <FormControlLabel
+                              className="mb-3"
+                              checked={checkAnswer(
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionC,
+                                questions.questions[getIndex(activeSubject._id)]
+                                  ._id
+                              )}
+                              value={
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionC
+                              }
+                              control={<Radio />}
+                              label={`C. ${
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionC
+                              }`}
+                            />
+                            <FormControlLabel
+                              className="mb-3"
+                              checked={checkAnswer(
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionD,
+                                questions.questions[getIndex(activeSubject._id)]
+                                  ._id
+                              )}
+                              value={
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionD
+                              }
+                              control={<Radio />}
+                              label={`D. ${
+                                questions.questions[getIndex(activeSubject._id)]
+                                  .optionD
+                              }`}
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
+                      <div className="col-lg-6"></div>
+                    </div>
+                  </>
+                ) : null}
               </div>
               <div className="p-3 mt-auto">
                 {questions.questions.map((c, i) => (

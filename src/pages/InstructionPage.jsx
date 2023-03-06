@@ -21,6 +21,7 @@ export default function InstructionPage({
       const initialQuestions = data.questions.questionBanks.find(
         (c) => c.subject === subjectId
       );
+
       if (initialQuestions) {
         setQuestions(initialQuestions);
       }
