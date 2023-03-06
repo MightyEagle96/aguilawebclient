@@ -163,7 +163,7 @@ export default function ExamPage() {
     viewResponses();
 
     window.addEventListener("keypress", keyPress);
-  }, [questions, activeSubject, networkStatus]);
+  }, [questions, activeSubject]);
 
   return (
     <div>
