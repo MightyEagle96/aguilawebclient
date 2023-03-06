@@ -18,6 +18,7 @@ export default function ExamPage() {
   const [activeSubject, setActiveSubject] = useState(null);
   const [questions, setQuestions] = useState(null);
   const [myResponses, setMyResponses] = useState([]);
+  const [networkStatus, setNetworkStatus] = useState(true);
 
   const viewResponses = async () => {
     const { data } = await httpService("viewResponses");
@@ -162,7 +163,7 @@ export default function ExamPage() {
     viewResponses();
 
     window.addEventListener("keypress", keyPress);
-  }, [questions, activeSubject]);
+  }, [questions, activeSubject, networkStatus]);
 
   return (
     <div>
@@ -174,6 +175,7 @@ export default function ExamPage() {
                 <div className="text-center">
                   {examData.subjects.map((c, i) => (
                     <Button
+                      disabled={!networkStatus}
                       onClick={() => {
                         setActiveSubject(c);
                         changeQuestions(c._id);
@@ -201,7 +203,10 @@ export default function ExamPage() {
                 </div>
                 <div className="row">
                   <div className="col-lg-6">
-                    <FormControl onChange={(e) => sendAnswer(e.target.value)}>
+                    <FormControl
+                      disabled={!networkStatus}
+                      onChange={(e) => sendAnswer(e.target.value)}
+                    >
                       <RadioGroup name="hello">
                         <FormControlLabel
                           className="mb-3"
@@ -283,6 +288,7 @@ export default function ExamPage() {
                     variant="contained"
                     className="me-1 mb-1"
                     size="small"
+                    disabled={!networkStatus}
                     onClick={() => changeQuestion(activeSubject._id, i)}
                     key={i}
                     color={changeBtnColor(c._id, i)}
@@ -339,12 +345,17 @@ export default function ExamPage() {
                   </Typography>
                 </div>
                 <div className="mt-4">
-                  <Button fullWidth variant="contained" onClick={submitExam}>
+                  <Button
+                    fullWidth
+                    disabled={!networkStatus}
+                    variant="contained"
+                    onClick={submitExam}
+                  >
                     submit
                   </Button>
                 </div>
                 <div className="mt-3">
-                  <NetworkConnectivity />
+                  <NetworkConnectivity setNetworkStatus={setNetworkStatus} />
                 </div>
               </div>
             </div>
