@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import { httpService, loggedInUser } from "../httpService";
 import InstructionPage from "./InstructionPage";
 import Swal from "sweetalert2";
+import NetworkConnectivity from "../components/NetworkConnectivity";
 
 export default function ExamPage() {
   const [examData, setExamData] = useState(null);
@@ -341,6 +342,9 @@ export default function ExamPage() {
                   <Button fullWidth variant="contained" onClick={submitExam}>
                     submit
                   </Button>
+                </div>
+                <div className="mt-3">
+                  <NetworkConnectivity />
                 </div>
               </div>
             </div>
