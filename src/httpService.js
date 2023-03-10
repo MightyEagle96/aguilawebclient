@@ -15,8 +15,7 @@ httpService.interceptors.response.use(
   (response) => {
     return response;
   },
-  async (error) => {
-    console.log(error);
+  (error) => {
     if (error.response)
       return { error: error.response.data, status: error.response.status };
 

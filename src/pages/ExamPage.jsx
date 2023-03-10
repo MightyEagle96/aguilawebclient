@@ -75,6 +75,18 @@ export default function ExamPage() {
     else return myResponses[index].responses.length;
   };
 
+  const getTotalResponse = () => {
+    let totalResponses = 0;
+
+    let totalQuestionsLength = 0;
+
+    examData.questions.questionBanks.forEach(
+      (c) => (totalQuestionsLength += c.questions.length)
+    );
+    myResponses.forEach((c) => (totalResponses += c.responses.length));
+
+    return { totalResponses, totalQuestionsLength };
+  };
   const changeBtnColor = (questionId, buttonIndex) => {
     const index = myResponses.findIndex((c) => c.subject === activeSubject._id);
 
@@ -362,9 +374,13 @@ export default function ExamPage() {
                   >
                     {activeSubject.name}
                   </Typography>
-                  <Typography fontWeight={900} color="#3d5afe">
+                  <Typography fontWeight={900} color="#3d5afe" gutterBottom>
                     {getQuestionsAnswered()} of {questions.questions.length}{" "}
                     answered
+                  </Typography>
+                  <Typography variant="h6" fontWeight={900} color="#a31545">
+                    Answered {getTotalResponse().totalResponses} out of{" "}
+                    {getTotalResponse().totalQuestionsLength}
                   </Typography>
                 </div>
                 <div className="mt-4">
