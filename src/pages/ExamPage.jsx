@@ -205,8 +205,16 @@ export default function ExamPage() {
                   <div className="d-flex align-items-center">
                     <Typography variant="h4" fontWeight={700}>
                       <Countdown
-                        date={Date.now() + 100 * 1000}
-                        onComplete={() => console.log("e don finish o")}
+                        date={Date.now() + loggedInUser.candidate.duration}
+                        onComplete={async () => {
+                          const { data } = await httpService("submit");
+
+                          if (data) {
+                            sessionStorage.removeItem("aguilaClient");
+
+                            window.location.assign("/examConcluded");
+                          }
+                        }}
                       />
                     </Typography>
                   </div>
