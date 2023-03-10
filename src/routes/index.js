@@ -16,8 +16,8 @@ export default function MainRoutes() {
       <Routes>
         {loggedInUser ? (
           <>
-            {privateRoutes.map((c) => (
-              <Route path={c.path} element={<c.component />} />
+            {privateRoutes.map((c, o) => (
+              <Route key={o} path={c.path} element={<c.component />} />
             ))}
           </>
         ) : (

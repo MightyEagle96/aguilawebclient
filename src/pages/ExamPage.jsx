@@ -12,6 +12,7 @@ import { httpService, loggedInUser } from "../httpService";
 import InstructionPage from "./InstructionPage";
 import Swal from "sweetalert2";
 import NetworkConnectivity from "../components/NetworkConnectivity";
+import Countdown from "react-countdown";
 
 export default function ExamPage() {
   const [examData, setExamData] = useState(null);
@@ -184,7 +185,7 @@ export default function ExamPage() {
           <div className="row m-0 examPage">
             <div className="col-lg-10 d-flex flex-column">
               <div className="p-3 ">
-                <div className="text-center">
+                <div className="d-flex flex-wrap justify-content-end">
                   {examData.subjects.map((c, i) => (
                     <Button
                       disabled={!networkStatus}
@@ -201,6 +202,14 @@ export default function ExamPage() {
                       {c.name}
                     </Button>
                   ))}
+                  <div className="d-flex align-items-center">
+                    <Typography variant="h4" fontWeight={700}>
+                      <Countdown
+                        date={Date.now() + 100 * 1000}
+                        onComplete={() => console.log("e don finish o")}
+                      />
+                    </Typography>
+                  </div>
                 </div>
 
                 {questions.questions.length > 0 ? (
